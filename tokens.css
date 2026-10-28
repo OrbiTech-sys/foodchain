@@ -1,0 +1,103 @@
+/* Hallmark tokens — Food Chain
+ * Every colour, font, radius, shadow, easing and duration used by the app is named here.
+ * Components reference these through Tailwind utilities (bg-cream, text-ink-2 …) or var(--token).
+ * theme: custom · vibe: "late-night charcoal, tomato, flame gold"
+ * paper oklch(96% 0.018 85) · accent oklch(55% 0.20 32) · axes: light / display-heavy / warm
+ */
+
+@theme {
+  /* Reset Tailwind's default palette and shadows so only named tokens can be used. */
+  --color-*: initial;
+  --shadow-*: initial;
+
+  /* Paper — warm cream, the main reading surface */
+  --color-cream: oklch(96% 0.018 85);
+  --color-cream-2: oklch(93% 0.022 83);
+  --color-cream-3: oklch(89% 0.026 80);
+  --color-card: oklch(98.4% 0.012 88);
+
+  /* Charcoal — the inverse surface (header, hero, deals band, footer) */
+  --color-char: oklch(19% 0.012 50);
+  --color-char-2: oklch(24% 0.013 50);
+  --color-char-3: oklch(30% 0.014 50);
+  --color-char-rule: oklch(36% 0.014 50);
+
+  /* Ink */
+  --color-ink: oklch(20% 0.012 50);
+  --color-ink-2: oklch(36% 0.014 55);
+  --color-muted: oklch(46% 0.014 60);
+  --color-rule: oklch(85% 0.02 82);
+  --color-rule-2: oklch(90% 0.02 84);
+
+  /* Text on charcoal */
+  --color-fog: oklch(74% 0.02 75);
+  --color-fog-2: oklch(60% 0.018 70);
+
+  /* Accent — tomato (primary) and flame gold (small highlights only) */
+  --color-tomato: oklch(55% 0.2 32);
+  --color-tomato-deep: oklch(47% 0.19 31);
+  --color-tomato-glow: oklch(70% 0.18 36);
+  --color-gold: oklch(82% 0.14 85);
+  --color-gold-deep: oklch(52% 0.11 75);
+
+  /* Focus, status */
+  --color-focus: oklch(55% 0.22 32);
+  --color-focus-dark: oklch(85% 0.14 85);
+  --color-success: oklch(46% 0.12 155);
+  --color-success-bg: oklch(94% 0.04 150);
+  --color-danger: oklch(46% 0.19 27);
+  --color-danger-bg: oklch(95% 0.035 25);
+  --color-warn: oklch(46% 0.1 70);
+  --color-warn-bg: oklch(94% 0.06 88);
+
+  /* Overlay */
+  --color-scrim: oklch(14% 0.012 50 / 0.62);
+
+  /* Type — Bricolage Grotesque (display) + Geist (body); two families, no outlier */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.75rem, 1.3rem + 5.6vw, 5.25rem);
+  --text-display--line-height: 1;
+  --text-display-s: clamp(2.25rem, 1.3rem + 3.4vw, 3.75rem);
+  --text-display-s--line-height: 1.04;
+
+  /* Shadows — one whisper, one lift */
+  --shadow-whisper: 0 1px 2px oklch(20% 0.012 50 / 0.08);
+  --shadow-lift: 0 18px 40px -18px oklch(20% 0.012 50 / 0.45);
+
+  /* Easing + duration (Hallmark canon) */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+
+  /* 4pt spacing scale, named by role */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Named z-index scale */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-header: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* Header geometry */
+  --banner-h: 2.5rem;
+  --bar-h: 4rem;
+}

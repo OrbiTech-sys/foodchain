@@ -1,69 +1,108 @@
-import Image from "next/image";
+import { SectionHeading } from "@/components/layout/section-heading";
+import { ButtonLink } from "@/components/ui/button";
+import {
+  getBranch,
+  getCategories,
+  getDeals,
+  getFeaturedProducts,
+  getProducts,
+  getSignatureProducts,
+} from "@/data/repository";
+import { BranchInformation } from "@/features/branch/components/branch-information";
+import { DealsGrid } from "@/features/deals/components/deals-grid";
+import { CategoryTiles } from "@/features/home/components/category-tiles";
+import { HeroSection } from "@/features/home/components/hero-section";
+import { OrderTypePanel } from "@/features/home/components/order-type-panel";
+import { WhySection } from "@/features/home/components/why-section";
+import { DeliveryCheckButton } from "@/features/order/components/delivery-check-dialog";
+import { ProductGrid } from "@/features/menu/components/product-grid";
 
-export default function Home() {
+export default async function HomePage() {
+  const [branch, categories, products, featured, signature, deals] = await Promise.all([
+    getBranch(),
+    getCategories(),
+    getProducts(),
+    getFeaturedProducts(),
+    getSignatureProducts(),
+    getDeals(),
+  ]);
+
+  const mealDeals = deals.filter((deal) => deal.kind === "meal").slice(0, 4);
+  const familyDeals = deals.filter((deal) => deal.kind === "family").slice(0, 4);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <HeroSection branch={branch} />
+      <OrderTypePanel />
+
+      <section id="categories" aria-labelledby="categories-title" className="page-container pb-6 pt-20 md:pt-24">
+        <SectionHeading
+          id="categories-title"
+          title="Browse the menu"
+          description="Seven sections, straight from our printed menu."
+          action={
+            <ButtonLink href="/menu" variant="outline">
+              Open full menu
+            </ButtonLink>
+          }
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className="mt-10">
+          <CategoryTiles categories={categories} products={products} />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section aria-labelledby="start-title" className="page-container space-y-14 pb-16 pt-14 md:pb-24 md:pt-20">
+        <div className="space-y-8">
+          <SectionHeading id="start-title" title="Where to start" description="Four easy first orders." />
+          <ProductGrid products={featured} columns={4} />
         </div>
-      </main>
-    </div>
+        <div className="space-y-8">
+          <SectionHeading
+            id="signature-title"
+            title="Signature pizzas"
+            description="The four specials from our pizza menu, in Personal to Family sizes."
+          />
+          <ProductGrid products={signature} columns={4} />
+        </div>
+      </section>
+
+      <section aria-labelledby="deals-title" className="on-dark bg-char text-cream">
+        <div className="page-container space-y-14 py-16 md:py-24">
+          <SectionHeading
+            id="deals-title"
+            title="Deals"
+            description={`${deals.length} set deals, priced as printed on our 2026 menu.`}
+            onDark
+            action={
+              <ButtonLink href="/deals" variant="outline-light">
+                See all {deals.length} deals
+              </ButtonLink>
+            }
+          />
+          <div className="space-y-6">
+            <h3 className="text-2xl sm:text-3xl">Meal deals</h3>
+            <DealsGrid deals={mealDeals} />
+          </div>
+          <div className="space-y-6">
+            <h3 className="text-2xl sm:text-3xl">Family and group combos</h3>
+            <DealsGrid deals={familyDeals} />
+          </div>
+        </div>
+      </section>
+
+      <WhySection branch={branch} dealCount={deals.length} />
+
+      <section aria-labelledby="visit-title" className="border-t border-rule bg-cream-2">
+        <div className="page-container space-y-10 py-16 md:py-20">
+          <SectionHeading
+            id="visit-title"
+            title="Find us"
+            description="One kitchen on Rifle Range Road. Pick up, or have it brought to you."
+            action={<DeliveryCheckButton variant="dark" />}
+          />
+          <BranchInformation branch={branch} />
+        </div>
+      </section>
+    </>
   );
 }
